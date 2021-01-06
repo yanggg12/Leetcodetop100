@@ -18,15 +18,16 @@
 
 """
 
-#author :yanggx
-#time :20201230
-#*- encoding=utf-8 -*
+
+# author :yanggx
+# time :20201230
+# *- encoding=utf-8 -*
 class Solution:
     def twoSum(self, nums: list[int], target: int) -> list[int]:
-        Deval2Id = {} #差与id的映射
+        Deval2Id = {}  # 差与id的映射
         for i in range(len(nums)):
             if nums[i] not in Deval2Id:
-                Deval2Id[target - nums[i]]=i #将差值添加进字典
+                Deval2Id[target - nums[i]] = i  # 将差值添加进字典
             else:
-                return [i,Deval2Id[nums[i]]]
+                return [i, Deval2Id[nums[i]]]
         return []
