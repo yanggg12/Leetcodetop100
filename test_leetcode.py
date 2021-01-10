@@ -48,31 +48,44 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
 
 
 class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        # len_max = max([len(l1),len(l2)])
-        # temp = [0 for i in range(len_max+1)]
-        result_node = ListNode(0)
-        temp = result_node
-        while l1 or l2:
-            if l1:
-                temp.val = l1.val+temp.val
-                l1 = l1.next
-            if l2:
-                temp.val = l2.val+temp.val
-                l2=l2.next
-            if temp.val>=10:
-                temp.val = temp.val -10
-                temp.next = ListNode(1)
-                temp = temp.next
-            elif l1 or l2:
-                temp.next = ListNode(0)
-                temp = temp.next
-        return result_node
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        max_str_len = 0
+        char2idex = {}
+        max_chars_start = 0
+        max_chars_end = 0
+        temp_start = 0
+        # temp_end = 0#[temp_end]是字串的最后一个字符索引,多余
+        # no_repetition = False #这一步多余，实际上，只需要在遇到无无重复字符的时候计算即可
+        for i in range(len(s)):
+            if char2idex.get(s[i],-1)>=temp_start:#如果字符在临时串中,则更新临时串
+                #与当前最长字符串比较大小
+                # temp_len = temp_end - temp_start + 1
+                # if max_str_len< temp_len:
+                #     max_str_len = temp_len
+                    # max_chars_end = temp_end
+                    # max_chars_start = temp_start
+                temp_start = char2idex.get(s[i])+1
+                char2idex[s[i]] = i
+                # temp_end = i#多余
+            else:
+                    char2idex[s[i]] = i
+                    # temp_end=i#多余
+                    #no_repetition = True
+                    max_str_len = max(i - temp_start + 1, max_str_len)#只需要在这一步计算
+        # if no_repetition:
+        #     temp_len = temp_end - temp_start + 1
+        #     max_str_len = max(temp_len,max_str_len)
+        return  max_str_len
+
+
+
+
 
 
 l1 = list_to_link([2,4,3])
 l2 = list_to_link([5,6,4])
-ans = Solution().addTwoNumbers(l1,l2)
+s = "abba"
+ans = Solution().lengthOfLongestSubstring(s)
 print(ans)
 # print(_input)
 pass
