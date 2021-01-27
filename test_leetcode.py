@@ -46,47 +46,115 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
 
     return build(preorder, 0, len(preorder) - 1, inorder, 0, len(inorder) - 1)
 
-
-class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        max_str_len = 0
-        char2idex = {}
-        max_chars_start = 0
-        max_chars_end = 0
-        temp_start = 0
-        # temp_end = 0#[temp_end]是字串的最后一个字符索引,多余
-        # no_repetition = False #这一步多余，实际上，只需要在遇到无无重复字符的时候计算即可
-        for i in range(len(s)):
-            if char2idex.get(s[i],-1)>=temp_start:#如果字符在临时串中,则更新临时串
-                #与当前最长字符串比较大小
-                # temp_len = temp_end - temp_start + 1
-                # if max_str_len< temp_len:
-                #     max_str_len = temp_len
-                    # max_chars_end = temp_end
-                    # max_chars_start = temp_start
-                temp_start = char2idex.get(s[i])+1
-                char2idex[s[i]] = i
-                # temp_end = i#多余
-            else:
-                    char2idex[s[i]] = i
-                    # temp_end=i#多余
-                    #no_repetition = True
-                    max_str_len = max(i - temp_start + 1, max_str_len)#只需要在这一步计算
-        # if no_repetition:
-        #     temp_len = temp_end - temp_start + 1
-        #     max_str_len = max(temp_len,max_str_len)
-        return  max_str_len
+class LinkNode:
+    __slots__ = ['key','value','prev','next']
+    def __init__(self):
+        self.key =0
+        self.value=0
 
 
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity= capacity
+        self.head = LinkNode() #头结点
+        self.tail = LinkNode() #尾结点
+        self.tail.key=-1
+        self.head.next,self.tail.prev = self.tail,self.head
+        self._map = {} # key到结点的映射
+
+
+    def get(self, key: int) -> int:
+        if key not in self._map:
+            return -1
+        #将结点移动到最后一位
+        self.move_to_end(self._map[key])
+        return self._map[key].value
+
+
+    def put(self, key: int, value: int) -> None:
+        if key in self._map:
+            self._map[key].value = value
+            self.move_to_end(self._map[key])
+        else:
+            node = self.add_to_end(key,value) #添加到链尾
+            self._map[key] = node#添加新结点到映射
+            #超过容量，删除第一个结点
+            if len(self._map) > self.capacity:
+                # print(self._map)
+                self._map.pop(self.head.next.key)
+                self.delete_first(self.head.next)
+
+                pass
+
+    def move_to_end(self,node:LinkNode)->None:
+        #将结点移动到队尾
+        node.prev.next, node.next.prev= node.next,node.prev
+        node.prev,self.tail.prev.next = self.tail.prev,node
+        node.next,self.tail.prev = self.tail,node
+    def add_to_end(self,key,value)->LinkNode:
+        node = LinkNode()
+        node.value = value
+        node.key = key
+        node.prev,node.next=self.tail.prev,self.tail
+        self.tail.prev, node.prev.next =node,node
+        return node
+    def delete_first(self,node:LinkNode)->None:
+        #删除对应的结点
+        node.next.prev = node.prev
+        node.prev.next =node.next
+    # def removenode(self,node:LinkNode)->None:
+    #     """
+    #     移除结点
+    #     :param node:
+    #     :return:
+    #     """
+    #     node.prev, node.next = self.tail.prev, self.tail
+    # def add2head(self,node:LinkNode)->None:
+    #     """
+    #     在头部添加结点
+    #     :param node:
+    #     :return:
+    #     """
+    #     node.prev = self.head
+    #     node.next = self.head.next
+    #     self.head.next.prev = node
+    #     self.head.next = node
+    # def movetohead(self,node:LinkNode)->None:
+    #     self.removenode(node)
+    #     self.add2head(node)
 
 
 
 
-l1 = list_to_link([2,4,3])
-l2 = list_to_link([5,6,4])
-s = "abba"
-ans = Solution().lengthOfLongestSubstring(s)
-print(ans)
-# print(_input)
-pass
+
+
+
+
+
+
+
+# Your LRUCache object will be instantiated and called as such:
+lRUCache=LRUCache(2)
+lRUCache.put(2, 1)# 缓存是 {1=1}
+lRUCache.put(1, 1)# 缓存是 {1=1}
+lRUCache.put(2, 3)# 缓存是 {1=1}
+lRUCache.put(4, 1)# 缓存是 {1=1}
+y=lRUCache.get(1)
+y=lRUCache.get(2)   # 返回 1
+node = lRUCache.head.next
+while node.value!=0:
+    print(node.prev.key,node.key,node.next.key)
+    node=node.next
+
+print(lRUCache._map)
+
+
+# l1 = list_to_link([2,4,3])
+# l2 = list_to_link([5,6,4])
+# s = "abba"
+# ans = Solution().lengthOfLongestSubstring(s)
+# print(ans)
+# # print(_input)
+# s=int()
+# pass
 
