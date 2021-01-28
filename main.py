@@ -8,9 +8,26 @@ def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
+def function():
+    return 1
 
+def generator():
+    yield 1
+
+async def async_function():
+    return 1
+
+
+async def async_generator():
+    yield 1
+
+import types
+
+class temp:
+    pass
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
+    print(type(str))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

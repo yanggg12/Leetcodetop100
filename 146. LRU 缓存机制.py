@@ -46,39 +46,40 @@ lRUCache.get(4);    // 返回 4
 """
 分析：个人难点，记录最久没有使用的关键字，采用队列：关键字被使用则添加到队尾，每次删除队首元素
 """
+
+
 class LinkNode:
-    __slots__ = ['key','value','prev','next']
+    __slots__ = ['key', 'value', 'prev', 'next']
+
     def __init__(self):
-        self.key =0
-        self.value=0
+        self.key = 0
+        self.value = 0
 
 
 class LRUCache:
     def __init__(self, capacity: int):
-        self.capacity= capacity
-        self.head = LinkNode() #头结点
-        self.tail = LinkNode() #尾结点
-        self.tail.key=-1
-        self.head.next,self.tail.prev = self.tail,self.head
-        self._map = {} # key到结点的映射
-
+        self.capacity = capacity
+        self.head = LinkNode()  # 头结点
+        self.tail = LinkNode()  # 尾结点
+        self.tail.key = -1
+        self.head.next, self.tail.prev = self.tail, self.head
+        self._map = {}  # key到结点的映射
 
     def get(self, key: int) -> int:
         if key not in self._map:
             return -1
-        #将结点移动到最后一位
+        # 将结点移动到最后一位
         self.move_to_end(self._map[key])
         return self._map[key].value
-
 
     def put(self, key: int, value: int) -> None:
         if key in self._map:
             self._map[key].value = value
             self.move_to_end(self._map[key])
         else:
-            node = self.add_to_end(key,value) #添加到链尾
-            self._map[key] = node#添加新结点到映射
-            #超过容量，删除第一个结点
+            node = self.add_to_end(key, value)  # 添加到链尾
+            self._map[key] = node  # 添加新结点到映射
+            # 超过容量，删除第一个结点
             if len(self._map) > self.capacity:
                 # print(self._map)
                 self._map.pop(self.head.next.key)
@@ -86,19 +87,21 @@ class LRUCache:
 
                 pass
 
-    def move_to_end(self,node:LinkNode)->None:
-        #将结点移动到队尾
-        node.prev.next, node.next.prev= node.next,node.prev
-        node.prev,self.tail.prev.next = self.tail.prev,node
-        node.next,self.tail.prev = self.tail,node
-    def add_to_end(self,key,value)->LinkNode:
+    def move_to_end(self, node: LinkNode) -> None:
+        # 将结点移动到队尾
+        node.prev.next, node.next.prev = node.next, node.prev
+        node.prev, self.tail.prev.next = self.tail.prev, node
+        node.next, self.tail.prev = self.tail, node
+
+    def add_to_end(self, key, value) -> LinkNode:
         node = LinkNode()
         node.value = value
         node.key = key
-        node.prev,node.next=self.tail.prev,self.tail
-        self.tail.prev, node.prev.next =node,node
+        node.prev, node.next = self.tail.prev, self.tail
+        self.tail.prev, node.prev.next = node, node
         return node
-    def delete_first(self,node:LinkNode)->None:
-        #删除对应的结点
+
+    def delete_first(self, node: LinkNode) -> None:
+        # 删除对应的结点
         node.next.prev = node.prev
-        node.prev.next =node.next
+        node.prev.next = node.next
