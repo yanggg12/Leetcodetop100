@@ -48,25 +48,39 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
 
 
 class Solution:
-    def isValid(self, s: str) -> bool:
-        parentheses = {')':'(',']':'[','}':'{',}
-        parentheses_stack = []
-        for char in s:
-            if char in parentheses:
-                if parentheses_stack and parentheses_stack[-1]==parentheses[char]:
-                    parentheses_stack.pop()
-                else:
-                    return False
+    def convert(self, s: str, numRows: int) -> str:
+        new_s =''
+        length = len(s)
+        i = 1
+        tmp_idx = i
+        j = 1
+        while len(new_s)<length:
+            new_s += s[tmp_idx-1]
+            # old_id = tmp_idx
+            if numRows==1:
+                return s
+            if i == 1 or i == numRows:
+                tmp_idx = tmp_idx + 2 * (numRows - 1)
             else:
-                parentheses_stack.append(char)
-        if parentheses_stack:
-            return False
-        else:
-            return True
+                if j % 2 != 0:#列向
+                    # print("$$$$$$$$$$$$",i)
+                    tmp_idx=tmp_idx + 2*(numRows-i)
+                else:
+                    # print("777777777777777")
+                    tmp_idx += 2*(i-1)
+            # print(i,j,s[old_id])
+            j+=1
+            if tmp_idx > length:
+                i+=1
+                tmp_idx=i
+                j=1
+
+        return new_s
 
 
-# s = "aaaaa"
+
+s = "12"
 # # nums1 = [1, 3]
 # # nums2 = [2]
-# ans = Solution().longestPalindrome(s)
-# print(ans)
+ans = Solution().convert(s,1)
+print(ans)
