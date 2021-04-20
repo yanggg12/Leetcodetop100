@@ -48,39 +48,26 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
 
 
 class Solution:
-    def convert(self, s: str, numRows: int) -> str:
-        new_s =''
-        length = len(s)
-        i = 1
-        tmp_idx = i
-        j = 1
-        while len(new_s)<length:
-            new_s += s[tmp_idx-1]
-            # old_id = tmp_idx
-            if numRows==1:
-                return s
-            if i == 1 or i == numRows:
-                tmp_idx = tmp_idx + 2 * (numRows - 1)
-            else:
-                if j % 2 != 0:#列向
-                    # print("$$$$$$$$$$$$",i)
-                    tmp_idx=tmp_idx + 2*(numRows-i)
-                else:
-                    # print("777777777777777")
-                    tmp_idx += 2*(i-1)
-            # print(i,j,s[old_id])
-            j+=1
-            if tmp_idx > length:
+    def maxArea(self, height: List[int]) -> int:
+        c_i,c_j=0,len(height)-1
+        def s(i,j):
+            return (j-i)*min(height[i],height[j])
+
+        res = s(c_i,c_j)
+        i,j = c_i,c_j
+        while i<j:
+            res = max(res,s(i,j))
+            if height[i]<height[j]:
                 i+=1
-                tmp_idx=i
-                j=1
-
-        return new_s
-
+            else:
+                j-=1
+        return res
 
 
-s = "12"
+
+
+height =[2,3,10,5,7,8,9]
 # # nums1 = [1, 3]
 # # nums2 = [2]
-ans = Solution().convert(s,1)
+ans = Solution().maxArea(height)
 print(ans)
