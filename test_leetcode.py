@@ -66,8 +66,9 @@ class Solution:
 
 
 
-height =[2,3,10,5,7,8,9]
-# # nums1 = [1, 3]
-# # nums2 = [2]
-ans = Solution().maxArea(height)
-print(ans)
+# height =[2,3,10,5,7,8,9]
+# # # nums1 = [1, 3]
+# # # nums2 = [2]
+# ans = Solution().maxArea(height)
+# print(ans)
+print(ord("A"))
