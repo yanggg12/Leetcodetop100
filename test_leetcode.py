@@ -47,28 +47,39 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
     return build(preorder, 0, len(preorder) - 1, inorder, 0, len(inorder) - 1)
 
 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
-    def maxArea(self, height: List[int]) -> int:
-        c_i,c_j=0,len(height)-1
-        def s(i,j):
-            return (j-i)*min(height[i],height[j])
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        dumbNode = ListNode(val=None,next=head)
+        quick_node =dumbNode
+        slow_node =dumbNode
+        for i in range(n):
+            quick_node=quick_node.next
+        while quick_node.next!=None:
+            # print(quick_node.val)
+            slow_node=slow_node.next
+            quick_node=quick_node.next
+        # print("dffffffffff")
+        # print("dddd",quick_node.val)
+        # print(slow_node.val)
+        # print(slow_node.next.val)
+        slow_node.next = slow_node.next.next
+        return dumbNode.next
 
-        res = s(c_i,c_j)
-        i,j = c_i,c_j
-        while i<j:
-            res = max(res,s(i,j))
-            if height[i]<height[j]:
-                i+=1
-            else:
-                j-=1
-        return res
-
-
+_list = [1,2,3,4,5]
+l = list_to_link(_list)
 
 
 # height =[2,3,10,5,7,8,9]
 # # # nums1 = [1, 3]
 # # # nums2 = [2]
-# ans = Solution().maxArea(height)
-# print(ans)
-print(ord("A"))
+ans = Solution().removeNthFromEnd(l,2)
+while ans:
+    print(ans.val)
+    ans=ans.next
+print(ans)
+# print(ord("A"))
