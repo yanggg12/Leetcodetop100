@@ -48,71 +48,27 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
 
 
 class Solution:
-    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        l3=ListNode()
-        p3 = l3
-        while l1 and l2:
-            p1,p2=l1,l2
-            while p1.val<=p2.val:
-                if p1.next and p1.next.val<=p2.val:
-                    p1=p1.next
-                else:
-                    break
-            if p1.val<=p2.val:
-                p3.next = l1
-                p3=p1
-                l1 = p1.next
-            while p1.val>p2.val:
-                if p2.next and p2.next.val<p1.val:
-                    p2=p2.next
-                else:
-                    break
-            if p2.val<p1.val:
-                p3.next = l2
-                p3=p2
-                l2 = p2.next
-        if l1:
-            p3.next=l1
-        elif l2:
-            p3.next=l2
-        return  l3.next
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        res_Listnode = ListNode()
+        p_r = res_Listnode
+        f=[]
+        for i in lists:
+            if i:
+                f.append(i)
+        lists=f
+        while lists:
+            vals = [tmp_listnode.val for tmp_listnode in lists]
+            min_indx = vals.index(min(vals))
+            p_r.next = lists[min_indx]
+            p_r = lists[min_indx]
+            if not lists[min_indx].next:
+                lists = [lists[i] for i in range(len(lists)) if i!=min_indx]
+            else:
+                lists[min_indx] = lists[min_indx].next
+            p_r.next =None
+        return res_Listnode.next
 
 
-
-
-        # """
-        # 以一个链表为基准，将另一个链表的一段插入到该链表
-        # :param l1:
-        # :param l2:
-        # :return:
-        # """
-        # p_l1 = l1
-        # head= ListNode()
-        # head.next = l1
-        # while l2 and p_l1:
-        #     p_l2 = l2
-        #     while p_l2 and p_l1 and p_l2.val>=p_l1.next.val:
-        #         print("22222",p_l2.val,p_l1.val)
-        #         p_l1=p_l1.next
-        #     print("qqqqqq",  p_l1.val,p_l2.val)
-        #     while p_l2 and p_l1.next and p_l2.val <= p_l1.next.val:
-        #         print("444", p_l1.val,p_l2.val, p_l1.next.val)
-        #         #找到l2中比l1相邻数的子串
-        #         if p_l2.next and p_l2.next.val <= p_l1.next.val:
-        #             p_l2 = p_l2.next
-        #         else:
-        #             break
-        #
-        #     if p_l1.next:
-        #         pnext = p_l1.next
-        #         p_l1.next = l2
-        #         l2 = p_l2.next
-        #         p_l2.next = pnext
-        #         p_l1=pnext
-        #     elif l2:
-        #         p_l1.next = l2
-        #         break
-        # return head.next
 
 
 
@@ -120,13 +76,14 @@ class Solution:
 
 l1 = [1,2,4]
 l2 = [1,3,4]
+l3=[1,4,6,8]
 l = list_to_link(l1)
 l2=list_to_link(l2)
-
+l3=list_to_link(l3)
 # height =[2,3,10,5,7,8,9]
 # # # nums1 = [1, 3]
 # # # nums2 = [2]
-ans = Solution().mergeTwoLists(l,l2)
+ans = Solution().mergeKLists([l,l2,l3])
 while ans:
     print("22222222",ans.val)
     ans=ans.next
