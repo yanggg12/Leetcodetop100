@@ -47,39 +47,88 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
     return build(preorder, 0, len(preorder) - 1, inorder, 0, len(inorder) - 1)
 
 
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
 class Solution:
-    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
-        dumbNode = ListNode(val=None,next=head)
-        quick_node =dumbNode
-        slow_node =dumbNode
-        for i in range(n):
-            quick_node=quick_node.next
-        while quick_node.next!=None:
-            # print(quick_node.val)
-            slow_node=slow_node.next
-            quick_node=quick_node.next
-        # print("dffffffffff")
-        # print("dddd",quick_node.val)
-        # print(slow_node.val)
-        # print(slow_node.next.val)
-        slow_node.next = slow_node.next.next
-        return dumbNode.next
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        l3=ListNode()
+        p3 = l3
+        while l1 and l2:
+            p1,p2=l1,l2
+            while p1.val<=p2.val:
+                if p1.next and p1.next.val<=p2.val:
+                    p1=p1.next
+                else:
+                    break
+            if p1.val<=p2.val:
+                p3.next = l1
+                p3=p1
+                l1 = p1.next
+            while p1.val>p2.val:
+                if p2.next and p2.next.val<p1.val:
+                    p2=p2.next
+                else:
+                    break
+            if p2.val<p1.val:
+                p3.next = l2
+                p3=p2
+                l2 = p2.next
+        if l1:
+            p3.next=l1
+        elif l2:
+            p3.next=l2
+        return  l3.next
 
-_list = [1,2,3,4,5]
-l = list_to_link(_list)
 
+
+
+        # """
+        # 以一个链表为基准，将另一个链表的一段插入到该链表
+        # :param l1:
+        # :param l2:
+        # :return:
+        # """
+        # p_l1 = l1
+        # head= ListNode()
+        # head.next = l1
+        # while l2 and p_l1:
+        #     p_l2 = l2
+        #     while p_l2 and p_l1 and p_l2.val>=p_l1.next.val:
+        #         print("22222",p_l2.val,p_l1.val)
+        #         p_l1=p_l1.next
+        #     print("qqqqqq",  p_l1.val,p_l2.val)
+        #     while p_l2 and p_l1.next and p_l2.val <= p_l1.next.val:
+        #         print("444", p_l1.val,p_l2.val, p_l1.next.val)
+        #         #找到l2中比l1相邻数的子串
+        #         if p_l2.next and p_l2.next.val <= p_l1.next.val:
+        #             p_l2 = p_l2.next
+        #         else:
+        #             break
+        #
+        #     if p_l1.next:
+        #         pnext = p_l1.next
+        #         p_l1.next = l2
+        #         l2 = p_l2.next
+        #         p_l2.next = pnext
+        #         p_l1=pnext
+        #     elif l2:
+        #         p_l1.next = l2
+        #         break
+        # return head.next
+
+
+
+
+
+l1 = [1,2,4]
+l2 = [1,3,4]
+l = list_to_link(l1)
+l2=list_to_link(l2)
 
 # height =[2,3,10,5,7,8,9]
 # # # nums1 = [1, 3]
 # # # nums2 = [2]
-ans = Solution().removeNthFromEnd(l,2)
+ans = Solution().mergeTwoLists(l,l2)
 while ans:
-    print(ans.val)
+    print("22222222",ans.val)
     ans=ans.next
-print(ans)
+# print(ans)
 # print(ord("A"))

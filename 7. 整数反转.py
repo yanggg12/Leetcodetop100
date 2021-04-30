@@ -32,3 +32,30 @@
 
 -231 <= x <= 231 - 1
 '''
+
+
+class Solution(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        res = 0
+        if x < 0:
+            flag = -1
+        else:
+            flag = 1
+        x = abs(x)
+        while x >= 10:
+            a = x % 10
+            if res == 0:
+                res = res + a
+            else:
+                res = res * 10 + a
+            x = x // 10
+
+        res = flag * (res * 10 + x)
+
+        if res < -2 ** 31 or res > 2 ** 31 - 1:
+            return 0
+        return res
