@@ -48,25 +48,27 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
 
 
 class Solution:
-    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
-        res_Listnode = ListNode()
-        p_r = res_Listnode
-        f=[]
-        for i in lists:
-            if i:
-                f.append(i)
-        lists=f
-        while lists:
-            vals = [tmp_listnode.val for tmp_listnode in lists]
-            min_indx = vals.index(min(vals))
-            p_r.next = lists[min_indx]
-            p_r = lists[min_indx]
-            if not lists[min_indx].next:
-                lists = [lists[i] for i in range(len(lists)) if i!=min_indx]
+    def nextPermutation(self, nums: List[int]):
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+
+        if len(nums)<=1:
+            return nums
+        i = len(nums) - 1
+        while i>=0:
+            if nums[-1]>nums[i]:
+                k=len(nums)-2
+                while nums[k]>nums[i]:
+                    k-=1
+                nums[k+1],nums[i] = nums[i],nums[k+1]
+                return nums
             else:
-                lists[min_indx] = lists[min_indx].next
-            p_r.next =None
-        return res_Listnode.next
+                t = nums[i]
+                nums[i:-1]=nums[i+1:]
+                nums[-1]=t
+            i-=1
+        return nums
 
 
 
@@ -74,18 +76,7 @@ class Solution:
 
 
 
-l1 = [1,2,4]
-l2 = [1,3,4]
-l3=[1,4,6,8]
-l = list_to_link(l1)
-l2=list_to_link(l2)
-l3=list_to_link(l3)
-# height =[2,3,10,5,7,8,9]
-# # # nums1 = [1, 3]
-# # # nums2 = [2]
-ans = Solution().mergeKLists([l,l2,l3])
-while ans:
-    print("22222222",ans.val)
-    ans=ans.next
-# print(ans)
-# print(ord("A"))
+
+l1 = [1,3,2]
+ans = Solution().nextPermutation(l1)
+print(ans)
