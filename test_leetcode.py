@@ -48,27 +48,30 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
 
 
 class Solution:
-    def nextPermutation(self, nums: List[int]):
-        """
-        Do not return anything, modify nums in-place instead.
-        """
-
-        if len(nums)<=1:
-            return nums
-        i = len(nums) - 1
-        while i>=0:
-            if nums[-1]>nums[i]:
-                k=len(nums)-2
-                while nums[k]>nums[i]:
-                    k-=1
-                nums[k+1],nums[i] = nums[i],nums[k+1]
-                return nums
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        l,r = 0,len(nums)-1
+        if nums[l]>target or nums[r]<target:
+            return [-1,-1]
+        t = [-1,-1]
+        while l<=r:
+            mid = (l+r)//2
+            print(l,r,mid)
+            if nums[mid]==target:
+                t=[mid,mid]
+                while t[0] - 1 >= 0 and nums[t[0] - 1] == nums[mid]:
+                    t[0] -= 1
+                print(nums[t[-1] + 1])
+                while t[-1] + 1 <= len(nums) - 1 and nums[t[-1] + 1] == nums[mid]:
+                    t[-1] += 1
+                break
+            if nums[l]<=target<nums[mid]:
+                r=mid-1
+            elif nums[mid]<target<=nums[r]:
+                l=mid+1
             else:
-                t = nums[i]
-                nums[i:-1]=nums[i+1:]
-                nums[-1]=t
-            i-=1
-        return nums
+                break
+            # break
+        return t
 
 
 
@@ -77,6 +80,9 @@ class Solution:
 
 
 
-l1 = [1,3,2]
-ans = Solution().nextPermutation(l1)
+
+
+
+l1 = [2,2]
+ans = Solution().searchRange(l1,2)
 print(ans)
