@@ -47,42 +47,36 @@ def buildTree(preorder: List[int], inorder: List[int]) -> TreeNode:
     return build(preorder, 0, len(preorder) - 1, inorder, 0, len(inorder) - 1)
 
 
+#
 class Solution:
-    def searchRange(self, nums: List[int], target: int) -> List[int]:
-        l,r = 0,len(nums)-1
-        if nums[l]>target or nums[r]<target:
-            return [-1,-1]
-        t = [-1,-1]
-        while l<=r:
-            mid = (l+r)//2
-            print(l,r,mid)
-            if nums[mid]==target:
-                t=[mid,mid]
-                while t[0] - 1 >= 0 and nums[t[0] - 1] == nums[mid]:
-                    t[0] -= 1
-                print(nums[t[-1] + 1])
-                while t[-1] + 1 <= len(nums) - 1 and nums[t[-1] + 1] == nums[mid]:
-                    t[-1] += 1
-                break
-            if nums[l]<=target<nums[mid]:
-                r=mid-1
-            elif nums[mid]<target<=nums[r]:
-                l=mid+1
-            else:
-                break
-            # break
-        return t
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        # 原地旋转
+        # 借助一个数
+        # rows = 0
+        # cols = 0
+        n = len(matrix)
+        if n % 2 == 0:
+            rows = n // 2  # 行数
+            cols = n // 2  # 列数
+        else:
+            rows = (n + 1) // 2 - 1
+            cols = (n + 1) // 2
+
+        print(rows,cols)
+        for i in range(rows):
+            for j in range(cols):
+                tmp = matrix[i][j]
+                matrix[i][j] = matrix[n - j - 1][i]
+                matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1]
+                matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1]
+                matrix[j][n-i-1] = tmp
+
+        return matrix
 
 
-
-
-
-
-
-
-
-
-
-l1 = [2,2]
-ans = Solution().searchRange(l1,2)
+nums = [[1,2,3],[4,5,6],[7,8,9]]
+ans = Solution().rotate(nums)
 print(ans)
